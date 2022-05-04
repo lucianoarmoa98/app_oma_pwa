@@ -1,9 +1,10 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState} from 'react';
+import '../App.css';
 // import { useLiveQuery } from 'dexie-react-hooks';
 // import { db } from './db';
 
 const Home = () => {
-    //const [dataDexie, setDataDexie] = useState(null);
+    const [dataDexie, setDataDexie] = useState(null);
 
     // useEffect(() => {
     //     datos();
@@ -18,10 +19,13 @@ const Home = () => {
         //obtengo data del localstorage
         let nameLocal = localStorage.getItem('dataStorage');
         let dataLocal = JSON.parse(nameLocal);
+        setDataDexie(dataLocal)
         console.log("info", dataLocal);
-        window.location.href = dataLocal.direccion;
+        //window.location.href = dataLocal.direccion;
 
       }, []);
+
+      //console.log("dataState", dataDexie)
 
     // const getDexie = useLiveQuery(
     //     async () => {
@@ -39,8 +43,9 @@ const Home = () => {
 
 
     return (
-        <div>
+        <div className='embed-container'>
             {/* Ingreso a la página de inicio */}
+            <iframe src={dataDexie ? dataDexie.direccion: 'vacio'}/>
         </div>
     );
 };
