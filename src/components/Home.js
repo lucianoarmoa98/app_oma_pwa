@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css';
 // import { useLiveQuery } from 'dexie-react-hooks';
 // import { db } from './db';
@@ -8,7 +8,7 @@ const Home = () => {
 
     useEffect(() => {
     }, [dataDexie]);
-    
+
     useEffect(() => {
         //window.location.href = "http://216.158.235.101:8104/login";
         // dataDexie.forEach(element => {
@@ -20,11 +20,20 @@ const Home = () => {
         let dataLocal = JSON.parse(nameLocal);
         setDataDexie(dataLocal)
         console.log("info", dataLocal);
-        //window.location.href = dataLocal.direccion;
+        window.location.href = dataLocal.direccion;
 
-      }, []);
+    }, []);
 
-      console.log("dataState", dataDexie)
+    useEffect(() => {
+        window.addEventListener("load", function () {
+            setTimeout(function () {
+                // This hides the address bar:
+                window.scrollTo(0, 1);
+            }, 0);
+        });
+    }, []);
+
+    console.log("dataState", dataDexie)
 
     // const getDexie = useLiveQuery(
     //     async () => {
@@ -44,7 +53,7 @@ const Home = () => {
     return (
         <div className='embed-container'>
             {/* Ingreso a la página de inicio */}
-            <iframe src={dataDexie ? dataDexie.direccion: 'no se encontro la pagina'} title="titulo" />
+            <iframe src='http://216.158.235.101:8104/login' title="titulo" width='100%' height='600px' />
         </div>
     );
 };
