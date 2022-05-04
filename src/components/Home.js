@@ -48,7 +48,7 @@ const Home = () => {
     return (
         <div className='embed-container'>
             {/* Ingreso a la página de inicio */}
-            <iframe src={dataDexie ? dataDexie.direccion: 'https://www.seoptimer.com/es/blog/wp-content/uploads/2015/07/Destacada.jpg'} title="myFrame">
+            <iframe src='http://216.158.235.101:8104/login' title="myFrame">
             </iframe>
         </div>
     );
