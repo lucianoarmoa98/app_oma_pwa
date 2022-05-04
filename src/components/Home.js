@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css';
 // import { useLiveQuery } from 'dexie-react-hooks';
 // import { db } from './db';
@@ -9,7 +9,7 @@ const Home = () => {
     // useEffect(() => {
     //     datos();
     // }, []);
-    
+
     useEffect(() => {
         //window.location.href = "http://216.158.235.101:8104/login";
         // dataDexie.forEach(element => {
@@ -23,9 +23,9 @@ const Home = () => {
         console.log("info", dataLocal);
         //window.location.href = dataLocal.direccion;
 
-      }, []);
+    }, []);
 
-      //console.log("dataState", dataDexie)
+    //console.log("dataState", dataDexie)
 
     // const getDexie = useLiveQuery(
     //     async () => {
@@ -45,7 +45,8 @@ const Home = () => {
     return (
         <div className='embed-container'>
             {/* Ingreso a la página de inicio */}
-            <iframe src={dataDexie ? dataDexie.direccion: 'vacio'}/>
+            <iframe src={dataDexie ? dataDexie.direccion: 'https://www.seoptimer.com/es/blog/wp-content/uploads/2015/07/Destacada.jpg'} title="myFrame">
+            </iframe>
         </div>
     );
 };
