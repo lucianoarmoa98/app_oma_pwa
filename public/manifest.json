@@ -18,8 +18,17 @@
       "sizes": "512x512"
     }
   ],
+  "protocolo_handlers": [
+    {
+      "name": "Search",
+      "description": "Search handler",
+      "url": "http://216.158.235.101:8104/login",
+      "enabled": true
+    }
+  ],
+  "scope": "/",
   "start_url": ".",
-  "display": "fullscreen",
+  "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
