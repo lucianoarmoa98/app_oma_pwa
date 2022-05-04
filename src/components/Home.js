@@ -46,7 +46,7 @@ const Home = () => {
     return (
         <div>
             {/* Ingreso a la página de inicio */}
-            <iframe src='http://216.158.235.101:8104/login' title="titulo" width='100%' height='600px' />
+            <iframe src='http://216.158.235.101:8104/login' title="titulo" width='100%' height='600px'></iframe>
         </div>
     );
 };
