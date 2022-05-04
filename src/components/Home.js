@@ -11,6 +11,9 @@ const Home = () => {
     // }, []);
 
     useEffect(() => {
+    }, [dataDexie]);
+
+    useEffect(() => {
         //window.location.href = "http://216.158.235.101:8104/login";
         // dataDexie.forEach(element => {
         //     //window.location.href = element.urlData;
@@ -25,7 +28,7 @@ const Home = () => {
 
     }, []);
 
-    //console.log("dataState", dataDexie)
+    console.log("dataState", dataDexie)
 
     // const getDexie = useLiveQuery(
     //     async () => {
