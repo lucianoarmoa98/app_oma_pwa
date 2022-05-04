@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from './db';
+// import { useLiveQuery } from 'dexie-react-hooks';
+// import { db } from './db';
 
 const Home = () => {
     const [dataDexie, setDataDexie] = useState(null);
 
-    useEffect(() => {
-        datos();
-    }, []);
+    // useEffect(() => {
+    //     datos();
+    // }, []);
     
     useEffect(() => {
         //window.location.href = "http://216.158.235.101:8104/login";
@@ -23,19 +23,19 @@ const Home = () => {
 
       }, []);
 
-    const getDexie = useLiveQuery(
-        async () => {
-            const stockGet = await db.url.toArray()
-            console.log("stockGet", stockGet);
-            //setDataDexie(stockGet);
-            return stockGet;
-        },
-    );
+    // const getDexie = useLiveQuery(
+    //     async () => {
+    //         const stockGet = await db.url.toArray()
+    //         console.log("stockGet", stockGet);
+    //         //setDataDexie(stockGet);
+    //         return stockGet;
+    //     },
+    // );
 
-    const datos = () => {
-       setDataDexie(getDexie);
-    }
-    console.log("dataDexie", dataDexie ? dataDexie : "no hay datos");
+    // const datos = () => {
+    //    setDataDexie(getDexie);
+    // }
+    // console.log("dataDexie", dataDexie ? dataDexie : "no hay datos");
 
 
     return (
