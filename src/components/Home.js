@@ -20,7 +20,7 @@ const Home = () => {
         let dataLocal = JSON.parse(nameLocal);
         setDataDexie(dataLocal)
         console.log("info", dataLocal);
-        window.location.href = dataLocal.direccion;
+        //window.location.href = dataLocal.direccion;
 
     }, []);
 
