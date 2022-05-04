@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import { db } from './db';
+import { DivCustom, DivCustomRight } from '../styles/Styles';
+import { useNavigate } from 'react-router-dom';
 
 function SesionUrl() {
     const [urlData, setUrlData] = useState('');
     const [installApp, setInstallApp] = useState(false);
+
+    //---------------------------------ruta de redireccion
+    let history = useNavigate();
+    
+
 
     useEffect(() => {
         window.addEventListener("beforeinstallprompt", (event) => {
@@ -39,19 +46,32 @@ function SesionUrl() {
         setInstallApp(false);
     }
 
-    const getUpdateDexie = (e) => {
+    //agrega la url a la base de datos => dexie
+    const getUpdateDexie = async (e) => {
 
         let body = {}
         body.direccion = urlData;
-        //se obtiene datos de los establecimientos
-        //db.establecimientos.clear();
-        db.establecimientos.bulkAdd(body);
+
+        // try {
+        //     await db.url.add({
+        //         urlData
+        //     });
+        // } catch (error) {
+        //     //console.log("👍", "error", error);
+        // }
+
+        //redirecciona a home
+        localStorage.setItem('dataStorage', JSON.stringify(body));
+        history('/inicio');
+        //console.log("agrega-body", body);
+
     }
+
 
 
     return (
         <div>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginRight: '5%', marginTop: '2%' }}>
+            <DivCustomRight>
                 {installApp &&
                     <Button
                         variant="contained"
@@ -61,9 +81,10 @@ function SesionUrl() {
                         Descargar
                     </Button>
                 }
-            </div>
+            </DivCustomRight>
 
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#f5f5f5', padding: '2%', marginTop: '10%' }}>
+
+            <DivCustom>
                 <TextField
                     label="Ingresar url"
                     value={urlData}
@@ -72,13 +93,18 @@ function SesionUrl() {
                 <Button
                     variant="contained"
                     color="primary"
-                    style={{ marginTop: '2%' }}
                     onClick={getUpdateDexie}
+                    sx={{
+                        marginTop: '2%',
+                        marginBottom: '2%',
+                        height: '5%',
+                        backgroundColor: '#00a8ff',
+                        color: '#fff',
+                    }}
                 >
                     Enviar
                 </Button>
-            </div>
-
+            </DivCustom>
         </div>
     );
 }
