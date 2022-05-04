@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 // import { db } from './db';
 
 const Home = () => {
-    const [dataDexie, setDataDexie] = useState(null);
+    //const [dataDexie, setDataDexie] = useState(null);
 
     // useEffect(() => {
     //     datos();
