@@ -19,14 +19,14 @@ const Home = () => {
         let nameLocal = localStorage.getItem('dataStorage');
         let dataLocal = JSON.parse(nameLocal);
         setDataDexie(dataLocal)
-        console.log("info", dataLocal);
+        //console.log("info", dataLocal);
         //window.location.href = dataLocal.direccion;
 
     }, []);
 
     
 
-    console.log("dataState", dataDexie)
+    //console.log("dataState", dataDexie)
 
     // const getDexie = useLiveQuery(
     //     async () => {
@@ -44,9 +44,9 @@ const Home = () => {
 
 
     return (
-        <div>
+        <div className="embed-container">
             {/* Ingreso a la página de inicio */}
-            <iframe src='http://216.158.235.101:8104/login' title="titulo" width='100%' height='600px'></iframe>
+            <iframe src={dataDexie ? dataDexie.direccion: 'vacio'} title="titulo"></iframe>
         </div>
     );
 };
