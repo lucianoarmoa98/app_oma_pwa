@@ -82,15 +82,56 @@ function LoginScreen({ }) {
     }
 
     const handleCreateValidacion = () => {
-        navigator.credentials.get(credentialCreacionOptions)
-            .then((newCredentialInfo) => {
-                console.log('newCredentialInfo====> Datos', newCredentialInfo)
-                // Enviar newCredentialInfo al servidor para registrarla
-            })
+        // navigator.credentials.get(credentialCreacionOptions)
+        //     .then((newCredentialInfo) => {
+        //         console.log('newCredentialInfo====> Datos', newCredentialInfo)
+        //         // Enviar newCredentialInfo al servidor para registrarla
+        //     })
+        //     .catch((err) => {
+        //         console.log('err====>Huellas', err)
+        //         // Manejar errores
+        //     });
+
+        //utilizar internal para autenticar con huella
+        navigator.credentials.get({
+            publicKey: {
+                // Relying Party (RP)
+                rp: {
+                    name: 'Dimo',
+                    id: 'localhost'
+                },
+                // User
+                user: {
+                    id: new Uint8Array(16),
+                    name: 'Dimo',
+                    displayName: 'Dimo'
+                },
+                // Challenge
+                challenge: new Uint8Array(32),
+                // Algoritmos de firma
+                pubKeyCredParams: [
+                    {
+                        type: 'public-key',
+                        alg: -7
+                    }
+                ],
+                // Timeout
+                timeout: 60000,
+                //autenticacion interna por huella
+                authenticatorSelection: {
+                    authenticatorAttachment: 'internal',
+                    userVerification: 'required'
+                }
+            }
+        }).then((newCredentialInfo) => {
+            console.log('newCredentialInfo====> Datos', newCredentialInfo)
+            // Enviar newCredentialInfo al servidor para registrarla
+        })
             .catch((err) => {
                 console.log('err====>Huellas', err)
                 // Manejar errores
             });
+
     }
 
 
