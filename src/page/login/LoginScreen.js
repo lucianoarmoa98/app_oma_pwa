@@ -210,7 +210,7 @@ function LoginScreen({ }) {
                                 color="secondary"
                                 onClick={downloadApp}
                             >
-                                Descargar
+                                Descargar Pwa
                             </Button>
                         }
                     </DivCustomRight>

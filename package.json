@@ -2,6 +2,7 @@
   "name": "app-oma-pwa",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://lucianoarmoa98.github.io/app-oma-pwa/",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -20,6 +21,7 @@
     "axios": "^0.27.2",
     "dexie": "^4.0.0-alpha.3",
     "dexie-react-hooks": "^1.1.1",
+    "gh-pages": "^5.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.1",
@@ -41,6 +43,8 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
