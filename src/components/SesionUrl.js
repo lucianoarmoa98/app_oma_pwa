@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 //import { db } from './db';
 import { DivCustom, DivCustomRight } from '../styles/Styles';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@mui/material';
 
 function SesionUrl() {
     const [urlData, setUrlData] = useState('');

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Backdrop, Button, CircularProgress, Container, CssBaseline, IconButton, InputAdornment, makeStyles, Paper, Snackbar, TextField, Typography, withStyles } from '@material-ui/core'
 import { useNavigate } from "react-router-dom";
 // import { useStylesLogin, CssTextField } from '../../styles/styles';
-import { Alert } from '@material-ui/lab';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+// import { Alert } from '@material-ui/lab';
 // import '../../styles/globalCss.css';
 // import { postLogin } from '../../api/api';
 // import { useDispatch } from 'react-redux';
 // import { setToken } from '../../redux/actions/action';
 import { useStylesLogin, CssTextField, DivCustomRight } from '../../styles/Styles';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Backdrop, Button, CircularProgress, Container, CssBaseline, IconButton, InputAdornment, Paper, Snackbar, Typography } from '@mui/material';
 
 
 
@@ -295,9 +295,9 @@ function LoginScreen({ }) {
                 </Container>
             </div>
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity={severity} elevation={6} variant="filled" >
+                {/* <Alert onClose={handleClose} severity={severity} elevation={6} variant="filled" >
                     {mensaje}
-                </Alert>
+                </Alert> */}
             </Snackbar>
 
             <Backdrop className={classes.backdrop} open={cargando}>

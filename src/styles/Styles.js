@@ -1,6 +1,6 @@
+import { TextField, styled } from '@mui/material';
 import imgFondo from '../assets/homeFondo.png';
-import { TextField, makeStyles, styled } from "@material-ui/core";
-import { brown } from "@material-ui/core/colors";
+import { brown } from '@mui/material/colors';
 
 export const COLOR_BACKGROUND_VERDER_AGUA = '#48c590';
 export const COLOR_BACKGROUND_VERDE_CLARO = "#e2f7ed";
@@ -27,7 +27,7 @@ export const DivCustomRight = styled('div')({
 });
 
 
-export const useStylesLogin = makeStyles(theme => ({
+export const useStylesLogin = styled(theme => ({
     centrarDiv: {
         // height: '100vh',
         height: altoPantalla,
