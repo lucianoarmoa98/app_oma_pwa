@@ -1,6 +1,7 @@
 {
   "short_name": "Gestor Mobile",
   "name": "Gestor Mobile",
+  "fingerprint": true,
   "icons": [
     {
       "src": "favicon.ico",
