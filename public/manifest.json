@@ -2,6 +2,9 @@
   "short_name": "Gestor Mobile",
   "name": "Gestor Mobile",
   "fingerprint": true,
+  "key": {
+    "fingerprint-auth-api-key": "AIzaSyCzsMcUoHjC6rGYuIBJHT6XJA4DywX2Eig"
+  },
   "icons": [
     {
       "src": "favicon.ico",
