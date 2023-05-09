@@ -1,8 +1,6 @@
-import { TextField } from "@mui/material";
-import { brown } from "@mui/material/colors";
-import { styled } from "@mui/system";
 import imgFondo from '../assets/homeFondo.png';
-import { makeStyles } from "@material-ui/core";
+import { TextField, makeStyles, styled } from "@material-ui/core";
+import { brown } from "@material-ui/core/colors";
 
 export const COLOR_BACKGROUND_VERDER_AGUA = '#48c590';
 export const COLOR_BACKGROUND_VERDE_CLARO = "#e2f7ed";
