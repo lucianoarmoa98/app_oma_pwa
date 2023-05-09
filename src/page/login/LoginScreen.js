@@ -204,7 +204,8 @@ function LoginScreen({ }) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: altoPantalla,
+                // height: altoPantalla,
+                height: '100vh',
                 width: '100vw',
                 backgroundColor: 'rgba(0,0,0,0.5)',
             }}>
