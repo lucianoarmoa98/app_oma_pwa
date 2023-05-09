@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 // import { useStylesLogin, CssTextField } from '../../styles/styles';
-// import { Alert } from '@material-ui/lab';
 // import '../../styles/globalCss.css';
 // import { postLogin } from '../../api/api';
 // import { useDispatch } from 'react-redux';
 // import { setToken } from '../../redux/actions/action';
 import { useStylesLogin, CssTextField, DivCustomRight } from '../../styles/Styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Backdrop, Button, CircularProgress, Container, CssBaseline, IconButton, InputAdornment, Paper, Snackbar, Typography } from '@mui/material';
+import { Alert, Backdrop, Button, CircularProgress, Container, CssBaseline, IconButton, InputAdornment, Paper, Snackbar, Typography } from '@mui/material';
 
 
 
@@ -25,6 +24,7 @@ function LoginScreen({ }) {
     const [installApp, setInstallApp] = useState(false);
 
     const classes = useStylesLogin();
+    let altoPantalla = window.innerHeight;
 
     // const dispatch = useDispatch();
 
@@ -200,7 +200,14 @@ function LoginScreen({ }) {
 
     return (
         <div className={classes.imagFondoLogin}>
-            <div className={classes.centrarDiv}>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: altoPantalla,
+                width: '100vw',
+                backgroundColor: 'rgba(0,0,0,0.5)',
+            }}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <DivCustomRight>
@@ -215,7 +222,12 @@ function LoginScreen({ }) {
                         }
                     </DivCustomRight>
 
-                    <Paper className={classes.paper}>
+                    <Paper style={{
+                        padding: '20px',
+                        borderRadius: '10px',
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+
+                    }}>
                         <Typography component="h1" variant="h5" align='center'>
                             Iniciar sesion
                         </Typography>
@@ -267,15 +279,24 @@ function LoginScreen({ }) {
 
                             />
 
-                            <div className={classes.buttonSpacing}>
-                                <Button
-                                    fullWidth
-                                    onClick={handleSubmit}
-                                    variant="contained"
-                                    className={classes.submit}
-                                >
-                                    Iniciar sesión
-                                </Button>
+                            <div style={{}}>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '50px',
+                                    width: '100%',
+                                    marginTop: '10px',
+                                }}>
+                                    <Button
+                                        fullWidth
+                                        onClick={handleSubmit}
+                                        variant="contained"
+                                        className={classes.submit}
+                                    >
+                                        Iniciar sesión
+                                    </Button>
+                                </div>
 
 
                                 <Button
@@ -283,6 +304,7 @@ function LoginScreen({ }) {
                                     onClick={handleSubmit}
                                     variant="contained"
                                     className={classes.buttonCrearCuenta}
+                                    color='secondary'
                                 >
                                     Crear cuenta
                                 </Button>
@@ -295,9 +317,9 @@ function LoginScreen({ }) {
                 </Container>
             </div>
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-                {/* <Alert onClose={handleClose} severity={severity} elevation={6} variant="filled" >
+                <Alert onClose={handleClose} severity={severity} elevation={6} variant="filled" >
                     {mensaje}
-                </Alert> */}
+                </Alert>
             </Snackbar>
 
             <Backdrop className={classes.backdrop} open={cargando}>
