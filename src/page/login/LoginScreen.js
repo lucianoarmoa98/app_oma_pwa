@@ -232,6 +232,9 @@ function LoginScreen({ }) {
             handleCreateUser();
         } else {
             console.log('no soporta huellas====>')
+            setMensaje("Hubo un error al crear el usuario, contacte al administrador");
+            setOpen(true);
+            setSeverity('error');
         }
     }
 
@@ -285,9 +288,9 @@ function LoginScreen({ }) {
             publicKey: {
                 // Relying Party (RP)
                 rp: {
-                    id: 'https://dulcet-zabaione-72320c.netlify.app',
-                    name: 'Dimo',
-                    // id: 'localhost'
+                    // id: 'https://dulcet-zabaione-72320c.netlify.app',
+                    name: 'https://dulcet-zabaione-72320c.netlify.app',
+                    id: 'https://dulcet-zabaione-72320c.netlify.app'
                 },
                 // User
                 user: {
@@ -335,6 +338,9 @@ function LoginScreen({ }) {
             .catch((err) => {
                 console.log('err====>Huellas', err)
                 // Manejar errores
+                setMensaje('Error al crear usuario');
+                setOpen(true);
+                setSeverity('error');
             });
     }
 
@@ -472,7 +478,7 @@ function LoginScreen({ }) {
                 </Container>
             </div>
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity={severity} elevation={6} variant="filled" >
+                <Alert onClose={handleClose} severity={severity} elevation={6} variant="filled" style={{textAlign: 'center'}} >
                     {mensaje}
                 </Alert>
             </Snackbar>
