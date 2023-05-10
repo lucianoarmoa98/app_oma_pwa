@@ -73,6 +73,10 @@ function LoginScreen({ }) {
             {
                 type: 'public-key',
                 alg: -7
+            },
+            {
+                type: 'public-key',
+                alg: -257
             }
         ],
     }
@@ -289,7 +293,7 @@ function LoginScreen({ }) {
                 // Relying Party (RP)
                 rp: {
                     // id: 'https://dulcet-zabaione-72320c.netlify.app',
-                    name: 'https://dulcet-zabaione-72320c.netlify.app',
+                    name: 'Dimo',
                     id: 'https://dulcet-zabaione-72320c.netlify.app'
                 },
                 // User
@@ -305,6 +309,10 @@ function LoginScreen({ }) {
                     {
                         type: 'public-key',
                         alg: -7
+                    },
+                    {
+                        type: 'public-key',
+                        alg: -257
                     }
                 ],
                 // Timeout
