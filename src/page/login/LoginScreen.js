@@ -285,9 +285,8 @@ function LoginScreen({ }) {
             publicKey: {
                 // Relying Party (RP)
                 rp: {
-                    name: 'dulcet-zabaione-72320c',
-                    id: '86ef1ba1-ab0f-48f6-879c-1e9b7d8579cd'
-                    // id: 'https://dulcet-zabaione-72320c.netlify.app'
+                    id: 'https://dulcet-zabaione-72320c.netlify.app',
+                    // id: 'localhost'
                 },
                 // User
                 user: {
