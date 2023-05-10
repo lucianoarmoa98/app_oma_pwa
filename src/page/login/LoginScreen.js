@@ -292,9 +292,9 @@ function LoginScreen({ }) {
             publicKey: {
                 // Relying Party (RP)
                 rp: {
-                    // id: 'https://dulcet-zabaione-72320c.netlify.app',
-                    name: 'Dimo',
-                    id: 'https://dulcet-zabaione-72320c.netlify.app'
+                    // id: 'localhost',
+                    name: 'https://testingpwa.com',
+                    id: 'https://testingpwa.com'
                 },
                 // User
                 user: {
