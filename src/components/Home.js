@@ -1,52 +1,57 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import '../App.css';
+import { Button } from '@mui/material';
 // import { useLiveQuery } from 'dexie-react-hooks';
 // import { db } from './db';
 
 const Home = () => {
-    const [dataDexie, setDataDexie] = useState(null);
+    const [refresPage, setRefresPage] = useState(false);
+
+    //---------------------------------ruta de redireccion
+    let history = useNavigate();
+
+    const dataStorage = localStorage.getItem('credential');
+
 
     useEffect(() => {
-    }, [dataDexie]);
+        if (!dataStorage) {
+            history('/');
+        }
 
-    useEffect(() => {
-        //window.location.href = "http://216.158.235.101:8104/login";
-        // dataDexie.forEach(element => {
-        //     //window.location.href = element.urlData;
-        //     console.log("info", element);
-        // });
-        //obtengo data del localstorage
-        let nameLocal = localStorage.getItem('dataStorage');
-        let dataLocal = JSON.parse(nameLocal);
-        setDataDexie(dataLocal)
-        //console.log("info", dataLocal);
-        //window.location.href = dataLocal.direccion;
+    }, [refresPage]);
 
-    }, []);
 
-    
 
-    //console.log("dataState", dataDexie)
+    const handleRemoverLocalStorgae = () => {
+        localStorage.removeItem('credential');
+        setRefresPage(!refresPage);
+    }
 
-    // const getDexie = useLiveQuery(
-    //     async () => {
-    //         const stockGet = await db.url.toArray()
-    //         console.log("stockGet", stockGet);
-    //         //setDataDexie(stockGet);
-    //         return stockGet;
-    //     },
-    // );
-
-    // const datos = () => {
-    //    setDataDexie(getDexie);
-    // }
-    // console.log("dataDexie", dataDexie ? dataDexie : "no hay datos");
 
 
     return (
-        <div className="embed-container">
-            {/* Ingreso a la página de inicio */}
-            <iframe src={dataDexie ? dataDexie.direccion: 'vacio'} title="titulo"></iframe>
+        <div style={{
+            //centrar verticalmente
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            padding: '0 20px'
+        }}>
+            <h1>Bienvenido...</h1>
+
+            <Button
+                fullWidth
+                onClick={handleRemoverLocalStorgae}
+                variant="contained"
+                // className={classes.buttonCrearCuenta}
+                color='secondary'
+            >
+                Cerrar Sesion
+            </Button>
+
         </div>
     );
 };

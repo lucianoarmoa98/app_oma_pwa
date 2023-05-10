@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 //--------------------------------validacion de si esta logueado, se usa para login y las rutas
 export const dataLocalStorage = () => {
-    let nameLocal = localStorage.getItem('dataStorage'); 
+    let nameLocal = localStorage.getItem('credential'); 
     if (nameLocal) {
         return JSON.parse(nameLocal);
     } else {

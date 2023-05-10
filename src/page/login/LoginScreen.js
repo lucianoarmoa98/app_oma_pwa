@@ -81,8 +81,8 @@ function LoginScreen({ }) {
         challenge: new Uint8Array(32),
         rp: {
             name: 'Dimo',
-            // id: 'localhost'
-            id: 'testingpwa.com'
+            id: 'localhost'
+            // id: 'testingpwa.com'
         },
         user: {
             id: new Uint8Array(16),
@@ -122,7 +122,7 @@ function LoginScreen({ }) {
                         setMensaje('Inicio de sesión exitoso');
                         setOpen(true);
                         setSeverity('success');
-                        // setTimeout(() => history('/home'), 2000);
+                        setTimeout(() => history('/inicio'), 1100);
                     } else {
                         //verifico si el id del usuario es diferente al del storage
                         console.log('son diferentes')
@@ -235,9 +235,9 @@ function LoginScreen({ }) {
             publicKey: {
                 // Relying Party (RP)
                 rp: {
-                    // id: 'localhost',
+                    id: 'localhost',
                     name: 'Dimo',
-                    id: 'testingpwa.com'
+                    // id: 'testingpwa.com'
                 },
                 // User
                 user: {
