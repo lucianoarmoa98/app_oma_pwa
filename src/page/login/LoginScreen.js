@@ -294,7 +294,7 @@ function LoginScreen({ }) {
                 rp: {
                     // id: 'localhost',
                     name: 'https://testingpwa.com',
-                    id: 'https://testingpwa.com'
+                    id: 'testingpwa.com'
                 },
                 // User
                 user: {
