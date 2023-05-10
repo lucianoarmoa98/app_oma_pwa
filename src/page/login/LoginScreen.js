@@ -285,7 +285,9 @@ function LoginScreen({ }) {
             publicKey: {
                 // Relying Party (RP)
                 rp: {
-                    id: 'https://dulcet-zabaione-72320c.netlify.app'
+                    name: 'dulcet-zabaione-72320c',
+                    id: '86ef1ba1-ab0f-48f6-879c-1e9b7d8579cd'
+                    // id: 'https://dulcet-zabaione-72320c.netlify.app'
                 },
                 // User
                 user: {
@@ -443,7 +445,7 @@ function LoginScreen({ }) {
                                 }}>
                                     <Button
                                         fullWidth
-                                        // onClick={handleValidarLoginUser}
+                                        onClick={handleValidarLoginUser}
                                         variant="contained"
                                         className={classes.submit}
                                     >
