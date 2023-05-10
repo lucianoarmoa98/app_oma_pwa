@@ -32,7 +32,7 @@ function LoginScreen({ }) {
     let history = useNavigate();
 
     useEffect(() => {
-        soportaHuellas();
+        // soportaHuellas();
     }, []);
 
     useEffect(() => {
@@ -176,61 +176,173 @@ function LoginScreen({ }) {
     }
 
 
-    //-----------------------------evento de iniciar sesion
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    // //-----------------------------evento de iniciar sesion
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
 
 
-        //usar trim para eliminar espacios en blanco
-        if (userName.trim() === '' || password.trim() === '') {
-            setOpen(true);
-            setSeverity('error');
-            setMensaje('Ingrese usuario y contraseña');
+    //     //usar trim para eliminar espacios en blanco
+    //     if (userName.trim() === '' || password.trim() === '') {
+    //         setOpen(true);
+    //         setSeverity('error');
+    //         setMensaje('Ingrese usuario y contraseña');
+    //     } else {
+    //         //-----------------------------datos de login para enviar a backend
+    //         let body = {};
+    //         body.usernameOrEmail = userName;
+    //         body.password = password;
+
+    //         setCargando(true);
+
+    //         // postLogin(body)
+    //         //     .then(response => {
+    //         //         if (response.data.status === "Activo") {
+    //         //             localStorage.setItem('dataUser', JSON.stringify(response.data));
+    //         //             // setTimeout(() => setCargando(false), 2000);
+    //         //             setCargando(false);
+    //         //             setOpen(true);
+    //         //             setSeverity('success');
+    //         //             setMensaje(response.data.mensaje);
+    //         //             setUserName("");
+    //         //             setPassword("");
+
+    //         //             setTimeout(() => dispatch(setToken(response.data)), 1150);
+
+    //         //         } else {
+    //         //             setOpen(true);
+    //         //             setSeverity('error');
+    //         //             setMensaje("Usuario inactivo, contacte al administrador");
+    //         //             setCargando(false);
+    //         //         }
+
+    //         //     })
+    //         //     .catch(error => {
+    //         //         console.log("errorSesion", error);
+    //         //         setOpen(true);
+    //         //         setSeverity('error');
+    //         //         setMensaje(error.mensaje);
+    //         //         setCargando(false);
+    //         //     })
+    //     }
+    // }
+
+    //validar si tiene para autenticar con huella
+    const handleValidarCreateUser = () => {
+        if (navigator.credentials) {
+            handleCreateUser();
         } else {
-            //-----------------------------datos de login para enviar a backend
-            let body = {};
-            body.usernameOrEmail = userName;
-            body.password = password;
-
-            setCargando(true);
-
-            // postLogin(body)
-            //     .then(response => {
-            //         if (response.data.status === "Activo") {
-            //             localStorage.setItem('dataUser', JSON.stringify(response.data));
-            //             // setTimeout(() => setCargando(false), 2000);
-            //             setCargando(false);
-            //             setOpen(true);
-            //             setSeverity('success');
-            //             setMensaje(response.data.mensaje);
-            //             setUserName("");
-            //             setPassword("");
-
-            //             setTimeout(() => dispatch(setToken(response.data)), 1150);
-
-            //         } else {
-            //             setOpen(true);
-            //             setSeverity('error');
-            //             setMensaje("Usuario inactivo, contacte al administrador");
-            //             setCargando(false);
-            //         }
-
-            //     })
-            //     .catch(error => {
-            //         console.log("errorSesion", error);
-            //         setOpen(true);
-            //         setSeverity('error');
-            //         setMensaje(error.mensaje);
-            //         setCargando(false);
-            //     })
+            console.log('no soporta huellas====>')
         }
+    }
+
+    //validar si tiene para autenticar con huella
+    const handleValidarLoginUser = () => {
+        if (navigator.credentials) {
+            handleGetUser();
+        } else {
+            console.log('no soporta huellas====>')
+        }
+    }
+
+    //obtener datos de usuario que se creo
+    const handleGetUser = () => {
+        //obtener la autenticacion que se creo en el dispositivo
+        navigator.credentials.get({
+            publicKey: {
+                // Relying Party (RP)
+                rpId: 'localhost',
+                // Challenge
+                challenge: new Uint8Array(32),
+                // Timeout
+                timeout: 60000,
+                // Algoritmos de firma
+                allowCredentials: [
+                    {
+                        type: 'public-key',
+                        id: new Uint8Array(16),
+                        transports: ['internal']
+                    }
+                ]
+            }
+        }).then((assertion) => {
+            console.log('assertion====> Datos', assertion)
+            // Enviar assertion al servidor para autenticarla
+            setMensaje('Autenticado correctamente');
+            setOpen(true);
+            setSeverity('success');
+        })
+            .catch((err) => {
+                console.log('err====>Huellas', err)
+                // Manejar errores
+            });
+
+    }
+
+
+    //crear usuario, autenticacion con huella o face id
+    const handleCreateUser = () => {
+        navigator.credentials.create({
+            publicKey: {
+                // Relying Party (RP)
+                rp: {
+                    name: 'Dimo',
+                    id: 'localhost'
+                    // id: 'https://dulcet-zabaione-72320c.netlify.app'
+                },
+                // User
+                user: {
+                    id: new Uint8Array(16),
+                    name: 'Dimo',
+                    displayName: 'Dimo'
+                },
+                // Challenge
+                challenge: new Uint8Array(32),
+                // Algoritmos de firma
+                pubKeyCredParams: [
+                    {
+                        type: 'public-key',
+                        alg: -7
+                    }
+                ],
+                // Timeout
+                timeout: 60000,
+                //autenticacion interna por huella
+                authenticatorSelection: {
+                    authenticatorAttachment: 'internal',
+                    userVerification: 'required'
+                }
+            }
+        })
+            .then((newCredentialInfo) => {
+                console.log('newCredentialInfo====> Datos', newCredentialInfo)
+                // Enviar newCredentialInfo al servidor para registrarla
+                const serializableCredential = {
+                    rawId: Array.from(newCredentialInfo.rawId),
+                    response: {
+                        attestationObject: Array.from(newCredentialInfo.response.attestationObject),
+                        clientDataJSON: newCredentialInfo.response.clientDataJSON,
+                    },
+                    authenticatorAttachment: newCredentialInfo.authenticatorAttachment,
+                    id: newCredentialInfo.id,
+                    type: newCredentialInfo.type,
+                };
+                localStorage.setItem('dataUser', JSON.stringify(serializableCredential));
+                setMensaje('Usuario creado correctamente');
+                setOpen(true);
+                setSeverity('success');
+                //se guarda en localstorage
+            })
+            .catch((err) => {
+                console.log('err====>Huellas', err)
+                // Manejar errores
+            });
     }
 
     //-----------------------------------------enviar datos con enter
     const eventEnter = (e) => {
         console.log("e", e.keyCode)
         if (e.keyCode === 13 && password.trim() !== '' && userName.trim() !== '') {
-            handleSubmit(e);
+            // handleSubmit(e);
         } else {
         }
     }
@@ -333,7 +445,7 @@ function LoginScreen({ }) {
                                 }}>
                                     <Button
                                         fullWidth
-                                        onClick={handleSubmit}
+                                        // onClick={handleValidarLoginUser}
                                         variant="contained"
                                         className={classes.submit}
                                     >
@@ -344,7 +456,7 @@ function LoginScreen({ }) {
 
                                 <Button
                                     fullWidth
-                                    onClick={handleSubmit}
+                                    onClick={handleValidarCreateUser}
                                     variant="contained"
                                     className={classes.buttonCrearCuenta}
                                     color='secondary'
