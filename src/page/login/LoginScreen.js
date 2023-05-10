@@ -286,6 +286,7 @@ function LoginScreen({ }) {
                 // Relying Party (RP)
                 rp: {
                     id: 'https://dulcet-zabaione-72320c.netlify.app',
+                    name: 'Dimo',
                     // id: 'localhost'
                 },
                 // User
