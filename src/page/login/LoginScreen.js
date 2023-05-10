@@ -253,11 +253,12 @@ function LoginScreen({ }) {
 
     //obtener datos de usuario que se creo
     const handleGetUser = () => {
-        //obtener la autenticacion que se creo en el dispositivo
+        //obtener la llave de acceso de la huella del localhost
         navigator.credentials.get({
             publicKey: {
                 // Relying Party (RP)
-                rpId: 'localhost',
+                // rpId: 'localhost',
+                rpId: 'testingpwa.com',
                 // Challenge
                 challenge: new Uint8Array(32),
                 // Timeout
@@ -267,21 +268,25 @@ function LoginScreen({ }) {
                     {
                         type: 'public-key',
                         id: new Uint8Array(16),
-                        transports: ['internal']
+                        transports: ['internal'],
+                        // transports: ['usb', 'nfc', 'ble'],
                     }
-                ]
+                ],
+                //autenticacion interna por huella
+                authenticatorSelection: {
+                    authenticatorAttachment: 'internal',
+                    userVerification: 'required',
+                    // requireResidentKey: true
+                },
             }
         }).then((assertion) => {
             console.log('assertion====> Datos', assertion)
             // Enviar assertion al servidor para autenticarla
-            setMensaje('Autenticado correctamente');
-            setOpen(true);
-            setSeverity('success');
         })
             .catch((err) => {
                 console.log('err====>Huellas', err)
                 // Manejar errores
-            });
+            })
 
     }
 
@@ -327,17 +332,23 @@ function LoginScreen({ }) {
             .then((newCredentialInfo) => {
                 console.log('newCredentialInfo====> Datos', newCredentialInfo)
                 // Enviar newCredentialInfo al servidor para registrarla
-                const serializableCredential = {
-                    rawId: Array.from(newCredentialInfo.rawId),
-                    response: {
-                        attestationObject: Array.from(newCredentialInfo.response.attestationObject),
-                        clientDataJSON: newCredentialInfo.response.clientDataJSON,
-                    },
-                    authenticatorAttachment: newCredentialInfo.authenticatorAttachment,
-                    id: newCredentialInfo.id,
-                    type: newCredentialInfo.type,
-                };
-                localStorage.setItem('dataUser', JSON.stringify(serializableCredential));
+                // const serializableCredential = {
+                //     rawId: Array.from(newCredentialInfo.rawId),
+                //     response: {
+                //         attestationObject: Array.from(newCredentialInfo.response.attestationObject),
+                //         clientDataJSON: newCredentialInfo.response.clientDataJSON,
+                //     },
+                //     authenticatorAttachment: newCredentialInfo.authenticatorAttachment,
+                //     id: newCredentialInfo.id,
+                //     type: newCredentialInfo.type,
+                // };
+
+                const serializableCredential = {};
+                serializableCredential.rawId = newCredentialInfo.id;
+                serializableCredential.type = newCredentialInfo.type;
+
+
+                localStorage.setItem('credential', JSON.stringify(serializableCredential));
                 setMensaje('Usuario creado correctamente');
                 setOpen(true);
                 setSeverity('success');
@@ -486,7 +497,7 @@ function LoginScreen({ }) {
                 </Container>
             </div>
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity={severity} elevation={6} variant="filled" style={{textAlign: 'center'}} >
+                <Alert onClose={handleClose} severity={severity} elevation={6} variant="filled" style={{ textAlign: 'center' }} >
                     {mensaje}
                 </Alert>
             </Snackbar>
