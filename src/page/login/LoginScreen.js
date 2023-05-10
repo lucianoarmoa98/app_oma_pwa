@@ -31,9 +31,6 @@ function LoginScreen({ }) {
     //---------------------------------ruta de redireccion
     let history = useNavigate();
 
-    useEffect(() => {
-        // soportaHuellas();
-    }, []);
 
     useEffect(() => {
         window.addEventListener("beforeinstallprompt", (event) => {
@@ -47,8 +44,30 @@ function LoginScreen({ }) {
         });
     }, []);
 
+    //descargar el archivo pwa
+    const downloadApp = async () => {
+        console.log("👍", "butInstall-clicked");
+        const promptEvent = window.deferredPrompt;
+        if (!promptEvent) {
+            // The deferred prompt isn't available.
+            console.log("oops, no prompt event guardado en window");
+            return;
+        }
+        // Show the install prompt.
+        promptEvent.prompt();
+        // Log the result
+        const result = await promptEvent.userChoice;
+        console.log("👍", "userChoice", result);
+        // Reset the deferred prompt variable, since
+        // prompt() can only be called once.
+        window.deferredPrompt = null;
+        // Hide the install button.
+        setInstallApp(false);
+    }
 
-    const soportaHuellas = () => {
+
+
+    const handleLogin = () => {
         if (navigator.credentials) {
             console.log('soporta huellas====>', navigator.credentials)
             handleCreateValidacion();
@@ -62,7 +81,8 @@ function LoginScreen({ }) {
         challenge: new Uint8Array(32),
         rp: {
             name: 'Dimo',
-            id: 'localhost'
+            // id: 'localhost'
+            id: 'testingpwa.com'
         },
         user: {
             id: new Uint8Array(16),
@@ -88,78 +108,42 @@ function LoginScreen({ }) {
     const handleCreateValidacion = () => {
         navigator.credentials.get(credentialCreacionOptions)
             .then((newCredentialInfo) => {
-                console.log('newCredentialInfo====> Datos', newCredentialInfo)
-                // Enviar newCredentialInfo al servidor para registrarla
+                console.log('newCredentialInfo====> Datos get', newCredentialInfo)
+                //verifico si hay datos en el storage
+                const credentials = localStorage.getItem('credential');
+                //pasar a json
+                const credentialsJson = JSON.parse(credentials);
+                //verifico si hay datos en el storage
+                if (credentialsJson) {
+                    //comparar si el id del usuario es igual al del storage
+                    if (credentialsJson.rawId === newCredentialInfo.id) {
+                        //verifico si el id del usuario es igual al del storage
+                        console.log('son iguales')
+                        setMensaje('Inicio de sesión exitoso');
+                        setOpen(true);
+                        setSeverity('success');
+                        // setTimeout(() => history('/home'), 2000);
+                    } else {
+                        //verifico si el id del usuario es diferente al del storage
+                        console.log('son diferentes')
+                        setMensaje('Usuario no registrado');
+                        setOpen(true);
+                        setSeverity('error');
+                    }
+                } else {
+                    setMensaje('Usuario no registrado');
+                    setOpen(true);
+                    setSeverity('error');
+                }
             })
             .catch((err) => {
                 console.log('err====>Huellas', err)
                 // Manejar errores
             });
 
-        //utilizar internal para autenticar con huella
-        // navigator.credentials.get({
-        //     publicKey: {
-        //         // Relying Party (RP)
-        //         rp: {
-        //             name: 'Dimo',
-        //             // id: 'localhost'
-        //             id:'https://dulcet-zabaione-72320c.netlify.app'
-        //         },
-        //         // User
-        //         user: {
-        //             id: new Uint8Array(16),
-        //             name: 'Dimo',
-        //             displayName: 'Dimo'
-        //         },
-        //         // Challenge
-        //         challenge: new Uint8Array(32),
-        //         // Algoritmos de firma
-        //         pubKeyCredParams: [
-        //             {
-        //                 type: 'public-key',
-        //                 alg: -7
-        //             }
-        //         ],
-        //         // Timeout
-        //         timeout: 60000,
-        //         //autenticacion interna por huella
-        //         authenticatorSelection: {
-        //             authenticatorAttachment: 'internal',
-        //             userVerification: 'required'
-        //         }
-        //     }
-        // }).then((newCredentialInfo) => {
-        //     console.log('newCredentialInfo====> Datos', newCredentialInfo)
-        //     // Enviar newCredentialInfo al servidor para registrarla
-        // })
-        //     .catch((err) => {
-        //         console.log('err====>Huellas', err)
-        //         // Manejar errores
-        //     });
-
     }
 
 
-    //descargar el archivo pwa
-    const downloadApp = async () => {
-        console.log("👍", "butInstall-clicked");
-        const promptEvent = window.deferredPrompt;
-        if (!promptEvent) {
-            // The deferred prompt isn't available.
-            console.log("oops, no prompt event guardado en window");
-            return;
-        }
-        // Show the install prompt.
-        promptEvent.prompt();
-        // Log the result
-        const result = await promptEvent.userChoice;
-        console.log("👍", "userChoice", result);
-        // Reset the deferred prompt variable, since
-        // prompt() can only be called once.
-        window.deferredPrompt = null;
-        // Hide the install button.
-        setInstallApp(false);
-    }
 
 
     //---------------------------------cerrar modal de alerta
@@ -242,53 +226,7 @@ function LoginScreen({ }) {
         }
     }
 
-    //validar si tiene para autenticar con huella
-    const handleValidarLoginUser = () => {
-        if (navigator.credentials) {
-            handleGetUser();
-        } else {
-            console.log('no soporta huellas====>')
-        }
-    }
 
-    //obtener datos de usuario que se creo
-    const handleGetUser = () => {
-        //obtener la llave de acceso de la huella del localhost
-        navigator.credentials.get({
-            publicKey: {
-                // Relying Party (RP)
-                // rpId: 'localhost',
-                rpId: 'testingpwa.com',
-                // Challenge
-                challenge: new Uint8Array(32),
-                // Timeout
-                timeout: 60000,
-                // Algoritmos de firma
-                allowCredentials: [
-                    {
-                        type: 'public-key',
-                        id: new Uint8Array(16),
-                        transports: ['internal'],
-                        // transports: ['usb', 'nfc', 'ble'],
-                    }
-                ],
-                //autenticacion interna por huella
-                authenticatorSelection: {
-                    authenticatorAttachment: 'internal',
-                    userVerification: 'required',
-                    // requireResidentKey: true
-                },
-            }
-        }).then((assertion) => {
-            console.log('assertion====> Datos', assertion)
-            // Enviar assertion al servidor para autenticarla
-        })
-            .catch((err) => {
-                console.log('err====>Huellas', err)
-                // Manejar errores
-            })
-
-    }
 
 
     //crear usuario, autenticacion con huella o face id
@@ -298,7 +236,7 @@ function LoginScreen({ }) {
                 // Relying Party (RP)
                 rp: {
                     // id: 'localhost',
-                    name: 'https://testingpwa.com',
+                    name: 'Dimo',
                     id: 'testingpwa.com'
                 },
                 // User
@@ -470,7 +408,7 @@ function LoginScreen({ }) {
                                 }}>
                                     <Button
                                         fullWidth
-                                        onClick={handleValidarLoginUser}
+                                        onClick={handleLogin}
                                         variant="contained"
                                         className={classes.submit}
                                     >
