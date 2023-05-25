@@ -31,6 +31,9 @@ function LoginScreen({ }) {
     //---------------------------------ruta de redireccion
     let history = useNavigate();
 
+    useEffect(() => {
+        // soportaHuellas();
+    }, []);
 
     useEffect(() => {
         window.addEventListener("beforeinstallprompt", (event) => {
@@ -43,6 +46,95 @@ function LoginScreen({ }) {
             setInstallApp(true);
         });
     }, []);
+
+
+    const soportaHuellas = () => {
+        if (navigator.credentials) {
+            console.log('soporta huellas====>', navigator.credentials)
+            handleCreateValidacion();
+        } else {
+            console.log('no soporta huellas====>')
+            return false;
+        }
+    }
+
+    const publicKey = {
+        challenge: new Uint8Array(32),
+        rp: {
+            name: 'Dimo',
+            id: 'localhost'
+        },
+        user: {
+            id: new Uint8Array(16),
+            name: 'Dimo',
+            displayName: 'Dimo'
+        },
+        pubKeyCredParams: [
+            {
+                type: 'public-key',
+                alg: -7
+            }
+        ],
+    }
+
+    const credentialCreacionOptions = {
+        publicKey: publicKey
+    }
+
+    const handleCreateValidacion = () => {
+        navigator.credentials.get(credentialCreacionOptions)
+            .then((newCredentialInfo) => {
+                console.log('newCredentialInfo====> Datos', newCredentialInfo)
+                // Enviar newCredentialInfo al servidor para registrarla
+            })
+            .catch((err) => {
+                console.log('err====>Huellas', err)
+                // Manejar errores
+            });
+
+        //utilizar internal para autenticar con huella
+        // navigator.credentials.get({
+        //     publicKey: {
+        //         // Relying Party (RP)
+        //         rp: {
+        //             name: 'Dimo',
+        //             // id: 'localhost'
+        //             id:'https://dulcet-zabaione-72320c.netlify.app'
+        //         },
+        //         // User
+        //         user: {
+        //             id: new Uint8Array(16),
+        //             name: 'Dimo',
+        //             displayName: 'Dimo'
+        //         },
+        //         // Challenge
+        //         challenge: new Uint8Array(32),
+        //         // Algoritmos de firma
+        //         pubKeyCredParams: [
+        //             {
+        //                 type: 'public-key',
+        //                 alg: -7
+        //             }
+        //         ],
+        //         // Timeout
+        //         timeout: 60000,
+        //         //autenticacion interna por huella
+        //         authenticatorSelection: {
+        //             authenticatorAttachment: 'internal',
+        //             userVerification: 'required'
+        //         }
+        //     }
+        // }).then((newCredentialInfo) => {
+        //     console.log('newCredentialInfo====> Datos', newCredentialInfo)
+        //     // Enviar newCredentialInfo al servidor para registrarla
+        // })
+        //     .catch((err) => {
+        //         console.log('err====>Huellas', err)
+        //         // Manejar errores
+        //     });
+
+    }
+
 
     //descargar el archivo pwa
     const downloadApp = async () => {
@@ -64,86 +156,6 @@ function LoginScreen({ }) {
         // Hide the install button.
         setInstallApp(false);
     }
-
-
-
-    const handleLogin = () => {
-        if (navigator.credentials) {
-            console.log('soporta huellas====>', navigator.credentials)
-            handleCreateValidacion();
-        } else {
-            console.log('no soporta huellas====>')
-            return false;
-        }
-    }
-
-    const publicKey = {
-        challenge: new Uint8Array(32),
-        rp: {
-            name: 'Dimo',
-            // id: 'localhost'
-            id: 'testingpwa.com'
-        },
-        user: {
-            id: new Uint8Array(16),
-            name: 'Dimo',
-            displayName: 'Dimo'
-        },
-        pubKeyCredParams: [
-            {
-                type: 'public-key',
-                alg: -7
-            },
-            {
-                type: 'public-key',
-                alg: -257
-            }
-        ],
-    }
-
-    const credentialCreacionOptions = {
-        publicKey: publicKey
-    }
-
-    const handleCreateValidacion = () => {
-        navigator.credentials.get(credentialCreacionOptions)
-            .then((newCredentialInfo) => {
-                console.log('newCredentialInfo====> Datos get', newCredentialInfo)
-                //verifico si hay datos en el storage
-                const credentials = localStorage.getItem('credential');
-                //pasar a json
-                const credentialsJson = JSON.parse(credentials);
-                //verifico si hay datos en el storage
-                if (credentialsJson) {
-                    //comparar si el id del usuario es igual al del storage
-                    if (credentialsJson.rawId === newCredentialInfo.id) {
-                        //verifico si el id del usuario es igual al del storage
-                        console.log('son iguales')
-                        setMensaje('Inicio de sesión exitoso');
-                        setOpen(true);
-                        setSeverity('success');
-                        setTimeout(() => history('/inicio'), 1100);
-                    } else {
-                        //verifico si el id del usuario es diferente al del storage
-                        console.log('son diferentes')
-                        setMensaje('Usuario no registrado');
-                        setOpen(true);
-                        setSeverity('error');
-                    }
-                } else {
-                    setMensaje('Usuario no registrado');
-                    setOpen(true);
-                    setSeverity('error');
-                }
-            })
-            .catch((err) => {
-                console.log('err====>Huellas', err)
-                // Manejar errores
-            });
-
-    }
-
-
 
 
     //---------------------------------cerrar modal de alerta
@@ -226,7 +238,56 @@ function LoginScreen({ }) {
         }
     }
 
+    //validar si tiene para autenticar con huella
+    const handleValidarLoginUser = () => {
+        let urlData = 'https://www.google.com';
 
+        const openURLInBrowser = (url) => {
+            const win = window.open(url, '_system');
+            win.focus();
+        };
+
+        openURLInBrowser(urlData);
+        // if (navigator.credentials) {
+        //     handleGetUser();
+        // } else {
+        //     console.log('no soporta huellas====>')
+        // }
+    }
+
+    //obtener datos de usuario que se creo
+    const handleGetUser = () => {
+        //obtener la autenticacion que se creo en el dispositivo
+        navigator.credentials.get({
+            publicKey: {
+                // Relying Party (RP)
+                rpId: 'localhost',
+                // Challenge
+                challenge: new Uint8Array(32),
+                // Timeout
+                timeout: 60000,
+                // Algoritmos de firma
+                allowCredentials: [
+                    {
+                        type: 'public-key',
+                        id: new Uint8Array(16),
+                        transports: ['internal']
+                    }
+                ]
+            }
+        }).then((assertion) => {
+            console.log('assertion====> Datos', assertion)
+            // Enviar assertion al servidor para autenticarla
+            setMensaje('Autenticado correctamente');
+            setOpen(true);
+            setSeverity('success');
+        })
+            .catch((err) => {
+                console.log('err====>Huellas', err)
+                // Manejar errores
+            });
+
+    }
 
 
     //crear usuario, autenticacion con huella o face id
@@ -235,9 +296,9 @@ function LoginScreen({ }) {
             publicKey: {
                 // Relying Party (RP)
                 rp: {
-                    // id: 'localhost',
+                    // id: 'https://dulcet-zabaione-72320c.netlify.app',
                     name: 'Dimo',
-                    id: 'testingpwa.com'
+                    id: 'localhost'
                 },
                 // User
                 user: {
@@ -252,10 +313,6 @@ function LoginScreen({ }) {
                     {
                         type: 'public-key',
                         alg: -7
-                    },
-                    {
-                        type: 'public-key',
-                        alg: -257
                     }
                 ],
                 // Timeout
@@ -270,23 +327,17 @@ function LoginScreen({ }) {
             .then((newCredentialInfo) => {
                 console.log('newCredentialInfo====> Datos', newCredentialInfo)
                 // Enviar newCredentialInfo al servidor para registrarla
-                // const serializableCredential = {
-                //     rawId: Array.from(newCredentialInfo.rawId),
-                //     response: {
-                //         attestationObject: Array.from(newCredentialInfo.response.attestationObject),
-                //         clientDataJSON: newCredentialInfo.response.clientDataJSON,
-                //     },
-                //     authenticatorAttachment: newCredentialInfo.authenticatorAttachment,
-                //     id: newCredentialInfo.id,
-                //     type: newCredentialInfo.type,
-                // };
-
-                const serializableCredential = {};
-                serializableCredential.rawId = newCredentialInfo.id;
-                serializableCredential.type = newCredentialInfo.type;
-
-
-                localStorage.setItem('credential', JSON.stringify(serializableCredential));
+                const serializableCredential = {
+                    rawId: Array.from(newCredentialInfo.rawId),
+                    response: {
+                        attestationObject: Array.from(newCredentialInfo.response.attestationObject),
+                        clientDataJSON: newCredentialInfo.response.clientDataJSON,
+                    },
+                    authenticatorAttachment: newCredentialInfo.authenticatorAttachment,
+                    id: newCredentialInfo.id,
+                    type: newCredentialInfo.type,
+                };
+                localStorage.setItem('dataUser', JSON.stringify(serializableCredential));
                 setMensaje('Usuario creado correctamente');
                 setOpen(true);
                 setSeverity('success');
@@ -408,7 +459,7 @@ function LoginScreen({ }) {
                                 }}>
                                     <Button
                                         fullWidth
-                                        onClick={handleLogin}
+                                        onClick={handleValidarLoginUser}
                                         variant="contained"
                                         className={classes.submit}
                                     >
