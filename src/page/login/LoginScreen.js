@@ -63,6 +63,7 @@ function LoginScreen({ }) {
         rp: {
             name: 'Dimo',
             id: 'localhost'
+            // id: 'testingpwa.com'
         },
         user: {
             id: new Uint8Array(16),
@@ -83,56 +84,42 @@ function LoginScreen({ }) {
 
     const handleCreateValidacion = () => {
         navigator.credentials.get(credentialCreacionOptions)
-            .then((newCredentialInfo) => {
-                console.log('newCredentialInfo====> Datos', newCredentialInfo)
-                // Enviar newCredentialInfo al servidor para registrarla
-            })
-            .catch((err) => {
-                console.log('err====>Huellas', err)
-                // Manejar errores
-            });
-
-        //utilizar internal para autenticar con huella
-        // navigator.credentials.get({
-        //     publicKey: {
-        //         // Relying Party (RP)
-        //         rp: {
-        //             name: 'Dimo',
-        //             // id: 'localhost'
-        //             id:'https://dulcet-zabaione-72320c.netlify.app'
-        //         },
-        //         // User
-        //         user: {
-        //             id: new Uint8Array(16),
-        //             name: 'Dimo',
-        //             displayName: 'Dimo'
-        //         },
-        //         // Challenge
-        //         challenge: new Uint8Array(32),
-        //         // Algoritmos de firma
-        //         pubKeyCredParams: [
-        //             {
-        //                 type: 'public-key',
-        //                 alg: -7
-        //             }
-        //         ],
-        //         // Timeout
-        //         timeout: 60000,
-        //         //autenticacion interna por huella
-        //         authenticatorSelection: {
-        //             authenticatorAttachment: 'internal',
-        //             userVerification: 'required'
-        //         }
-        //     }
-        // }).then((newCredentialInfo) => {
-        //     console.log('newCredentialInfo====> Datos', newCredentialInfo)
-        //     // Enviar newCredentialInfo al servidor para registrarla
-        // })
-        //     .catch((err) => {
-        //         console.log('err====>Huellas', err)
-        //         // Manejar errores
-        //     });
-
+        .then((newCredentialInfo) => {
+            console.log('newCredentialInfo====> Datos get', newCredentialInfo)
+            //verifico si hay datos en el storage
+            const credentials = localStorage.getItem('dataUser');
+            //pasar a json
+            const credentialsJson = JSON.parse(credentials);
+            //verifico si hay datos en el storage
+            if (credentialsJson) {
+                //comparar si el id del usuario es igual al del storage
+                if (credentialsJson.id === newCredentialInfo.id) {
+                    //verifico si el id del usuario es igual al del storage
+                    console.log('son iguales')
+                    setMensaje('Inicio de sesión exitoso');
+                    setOpen(true);
+                    setSeverity('success');
+                    setTimeout(() => history('/inicio'), 1100);
+                } else {
+                    //verifico si el id del usuario es diferente al del storage
+                    console.log('son diferentes')
+                    setMensaje('Usuario no registrado');
+                    setOpen(true);
+                    setSeverity('error');
+                }
+            } else {
+                setMensaje('Usuario no registrado');
+                setOpen(true);
+                setSeverity('error');
+            }
+            console.log('newCredentialInfo====> Datos', newCredentialInfo)
+            // Enviar newCredentialInfo al servidor para registrarla
+        })
+        .catch((err) => {
+            console.log('err====>Huellas', err)
+            // Manejar errores
+        });
+        
     }
 
 
@@ -176,55 +163,7 @@ function LoginScreen({ }) {
     }
 
 
-    // //-----------------------------evento de iniciar sesion
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-
-
-    //     //usar trim para eliminar espacios en blanco
-    //     if (userName.trim() === '' || password.trim() === '') {
-    //         setOpen(true);
-    //         setSeverity('error');
-    //         setMensaje('Ingrese usuario y contraseña');
-    //     } else {
-    //         //-----------------------------datos de login para enviar a backend
-    //         let body = {};
-    //         body.usernameOrEmail = userName;
-    //         body.password = password;
-
-    //         setCargando(true);
-
-    //         // postLogin(body)
-    //         //     .then(response => {
-    //         //         if (response.data.status === "Activo") {
-    //         //             localStorage.setItem('dataUser', JSON.stringify(response.data));
-    //         //             // setTimeout(() => setCargando(false), 2000);
-    //         //             setCargando(false);
-    //         //             setOpen(true);
-    //         //             setSeverity('success');
-    //         //             setMensaje(response.data.mensaje);
-    //         //             setUserName("");
-    //         //             setPassword("");
-
-    //         //             setTimeout(() => dispatch(setToken(response.data)), 1150);
-
-    //         //         } else {
-    //         //             setOpen(true);
-    //         //             setSeverity('error');
-    //         //             setMensaje("Usuario inactivo, contacte al administrador");
-    //         //             setCargando(false);
-    //         //         }
-
-    //         //     })
-    //         //     .catch(error => {
-    //         //         console.log("errorSesion", error);
-    //         //         setOpen(true);
-    //         //         setSeverity('error');
-    //         //         setMensaje(error.mensaje);
-    //         //         setCargando(false);
-    //         //     })
-    //     }
-    // }
+    
 
     //validar si tiene para autenticar con huella
     const handleValidarCreateUser = () => {
@@ -247,12 +186,6 @@ function LoginScreen({ }) {
             win.focus();
         };
 
-        openURLInBrowser(urlData);
-        // if (navigator.credentials) {
-        //     handleGetUser();
-        // } else {
-        //     console.log('no soporta huellas====>')
-        // }
     }
 
     //obtener datos de usuario que se creo
@@ -296,9 +229,9 @@ function LoginScreen({ }) {
             publicKey: {
                 // Relying Party (RP)
                 rp: {
-                    // id: 'https://dulcet-zabaione-72320c.netlify.app',
                     name: 'Dimo',
                     id: 'localhost'
+                    // id: 'testingpwa.com'
                 },
                 // User
                 user: {
@@ -459,6 +392,7 @@ function LoginScreen({ }) {
                                 }}>
                                     <Button
                                         fullWidth
+                                        // onClick={soportaHuellas}
                                         onClick={handleValidarLoginUser}
                                         variant="contained"
                                         className={classes.submit}
