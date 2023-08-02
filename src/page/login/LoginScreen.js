@@ -238,21 +238,49 @@ function LoginScreen({ }) {
         }
     }
 
+    const handleReceptor = (e) => {
+        // console.log("e====>", e)
+        alert(`Mensaje recibido: ${e.data}`)
+    }
+
     //validar si tiene para autenticar con huella
     const handleValidarLoginUser = () => {
-        let urlData = 'https://www.google.com';
+        // let urlData = 'https://www.google.com';
 
-        const openURLInBrowser = (url) => {
-            const win = window.open(url, '_system');
-            win.focus();
-        };
+        // const openURLInBrowser = (url) => {
+        //     const win = window.open(url, '_system');
+        //     win.focus();
+        // };
 
-        openURLInBrowser(urlData);
-        // if (navigator.credentials) {
-        //     handleGetUser();
-        // } else {
-        //     console.log('no soporta huellas====>')
-        // }
+        // openURLInBrowser(urlData);
+        // // if (navigator.credentials) {
+        // //     handleGetUser();
+        // // } else {
+        // //     console.log('no soporta huellas====>')
+        // // }
+
+
+        //enviar un mensaje al webView y luego recibirlo usando addEventListener
+        let mensaje = {
+            type: "mensaje",
+            data: "Hola desde el webview"
+        }
+        window.ReactNativeWebView.postMessage(JSON.stringify(mensaje));
+
+        // document.addEventListener("message", function (event) {
+        //     // console.log("event====>", event.data);
+        //     alert(`Mensaje recibido: ${event.data}`)
+        // });
+
+        //se usa para recibir el mensaje del webview en el navegador si es Android
+        document.addEventListener("message", handleReceptor);
+
+        //se usa para recibir el mensaje del webview en el navegador si es IOS
+        // window.addEventListener("message", handleReceptor);
+
+
+
+
     }
 
     //obtener datos de usuario que se creo
